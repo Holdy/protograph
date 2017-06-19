@@ -1,6 +1,6 @@
 {
   "name": "protograph",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "A (very) simple graph database for prototyping.",
   "main": "protograph.js",
   "scripts": {
