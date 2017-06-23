@@ -1,7 +1,12 @@
 var expect = require('chai').expect;
+var os = require('os');
+var path = require('path');
+
 var r = require('./testResources');
 
-var store = require('../protograph').create({directory: '/Users/chrisholden/data/triples2'});
+var homeDirectory = os.homedir();
+var dataDirectory = path.join(homeDirectory, 'data/protograph-test');
+var store = require('../protograph').create({directory: dataDirectory});
 
 describe('store', function() {
 
@@ -12,16 +17,14 @@ describe('store', function() {
         };
     }
 
-    //todo storeMeta.directory should only store relative path under storeRoot.
-    // so that if it is accidentally shown - the actual store root isn't shown.
-    it('should write a new file', function(done) {
+    it('should write a new file - without exposing storage root', function(done) {
 
         var randomPerson = getRandomPerson();
 
         store.put([randomPerson, r.speaks, r.english], function(err) {
             expect(err).to.not.be.ok;
 
-            expect(randomPerson.storeMeta.directory.indexOf('chrisholden')).to.equal(-1);
+            expect(randomPerson.storeMeta.directory.indexOf(homeDirectory)).to.equal(-1);
 
             var items = [];
             store.get([randomPerson, r.speaks, null],

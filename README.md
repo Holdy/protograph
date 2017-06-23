@@ -2,7 +2,7 @@
 
 Protograph is a (very) simple RDF style graph database.
 
-Creating a client by saying where the data should be stored:
+Create a client by saying where the data should be stored:
 ```
    var protograph = require('protograph');
    var proto = protograph.create({directory:'/mydata/testGraph/'});
@@ -22,9 +22,10 @@ Currently you can only store resource-predicate-resource facts E.g:
 
 And then query on them:
 ```
-   proto.get([jeff, likes, null],
-      function(item, done) {
+   proto.get([jeff, likes, null], // Jeff likes ?
+      function(item, itemCallback) {
           // Do what you want with each thing Jeff likes.
+          itemCallback();
       },
       function(err) {
           // Called after all things Jeff likes.
@@ -35,3 +36,7 @@ You cannot currently:
  * Store string objects.
  * Store number objects.
  * Query based on the object, E.g. '? likes cheese'.
+
+
+If you do not specify a directory option, the value in the environment variable PROTOGRAPH_DIRECTORY will be used.
+If this environment variable is not present ~/protograph_data will be used.
