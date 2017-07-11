@@ -92,6 +92,34 @@ describe('store', function() {
         });
     });
 
+    var shoeSizeRel = {r: 'http://fake.org/ont/shoesize'};
+
+    it('should store and retrieve a number', function(done) {
+
+        var factCount = 0;
+        store.put([r.dave, shoeSizeRel, {n:10}], function(err) {
+            expect(err).to.not.be.ok;
+
+            getFactList([r.dave, shoeSizeRel], function(err,list) {
+                expect(err).to.not.be.ok;
+                expect(list.length).to.equal(1);
+
+                store.get([null, shoeSizeRel, {n:10}], function(fact, factDone) {
+                    expect(fact[0].r).to.equal(r.dave.r);
+                    factCount++;
+                    factDone();
+                },
+                function (err) {
+                    expect(err).to.not.be.ok;
+                    expect(factCount).to.equal(1);
+                    done();
+                });
+
+            });
+        });
+
+    });
+
     it('should ensure values but not repeat them', function(done) {
         var fact = [r.dave, r.speaks, r.english];
 
