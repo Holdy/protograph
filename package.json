@@ -1,17 +1,22 @@
 {
   "name": "protograph",
-  "version": "0.0.3",
+  "version": "0.0.6",
   "description": "A (very) simple graph database for prototyping.",
   "main": "protograph.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
+    "test": "_mocha --recursive \"test/**/*.test.js\""
+  }, "repository": {
     "type": "git",
     "url": "git+https://github.com/Holdy/protograph.git"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "mkdirp": "0.5.x"
+  },
+  "devDependencies": {
+    "mocha": "2.3.x"
   },
   "author": "Holdy",
   "license": "MIT"

@@ -12,10 +12,35 @@ describe('store', function() {
 
 
     function getRandomPerson() {
+        var randomPart = (new Date()).getTime();
         return {
-            r: 'http://www.rainbird.ai/ont/person#' + (new Date()).getTime()
+            'randomPart': randomPart,
+            r: 'http://www.rainbird.ai/ont/person#' + randomPart
         };
     }
+
+    it('should allow storage and query on strings', function(done) {
+
+        var foundFactCount = 0;
+        var jrandom = getRandomPerson();
+        var name = {s:'Biff Tanner ' + jrandom.randomPart};
+        store.put([jrandom, r.rdfs_label,  name], function(err) {
+
+            store.get([null, r.rdfs_label, name],
+                function itemIterator(item, itemDone) {
+                    expect(item[0].r).to.equal(jrandom.r);
+                    foundFactCount++;
+                    itemDone();
+                },
+                function completed(err) {
+                    expect(err).to.not.be.ok;
+                    expect(foundFactCount).to.equal(1);
+                    done();
+                });
+        });
+
+
+    });
 
     it('should write a new file - without exposing storage root', function(done) {
 
@@ -29,7 +54,7 @@ describe('store', function() {
             var items = [];
             store.get([randomPerson, r.speaks, null],
                 function itemIterator(item, done) {
-                    items.push(item);
+                    items.push(item[2]);
                     done();
                 },
                 function completed(err) {
@@ -87,6 +112,28 @@ describe('store', function() {
             });
         });
     });
+
+    it('should allow lookup of facts by ?-r-r', function(done) {
+        var fact = [r.dave, r.speaks, r.spanglish];
+
+        store.put(fact, function(err) {
+            expect(err).to.not.be.ok;
+
+            getFactList([null, fact[1], fact[2]], function(err, list) {
+                expect(list.length).to.equal(1);
+
+                store.put(fact, function(err) {
+                    expect(err).to.not.be.ok;
+
+                    getFactList(fact, function(err, list) {
+                        expect(list.length).to.equal(1);
+                        done();
+                    });
+                });
+            });
+        });
+    });
+
 
     function getFactList(fact, callback) {
         var list = [];

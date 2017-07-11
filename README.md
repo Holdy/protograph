@@ -23,8 +23,8 @@ Currently you can only store resource-predicate-resource facts E.g:
 And then query on them:
 ```
    proto.get([jeff, likes, null], // Jeff likes ?
-      function(item, itemCallback) {
-          // Do what you want with each thing Jeff likes.
+      function(foundFact, itemCallback) {
+          // Do what you want with each Jeff likes X fact.
           itemCallback();
       },
       function(err) {
@@ -37,6 +37,12 @@ You cannot currently:
  * Store number objects.
  * Query based on the object, E.g. '? likes cheese'.
 
+
+Roadmap:
+ * Delete facts.
+ * Dump all facts.
+ * Language codes for strings.
+ * Type codes for numbers.
 
 If you do not specify a directory option, the value in the environment variable PROTOGRAPH_DIRECTORY will be used.
 If this environment variable is not present ~/protograph_data will be used.

@@ -7,3 +7,4 @@ function create(options) {
 }
 
 module.exports.create = create;
+module.exports.createClient = create;
